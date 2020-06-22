@@ -1,15 +1,13 @@
 package com.tpg.booksms.web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tpg.booksms.services.UuidGenerationService;
+import com.tpg.booksms.web.WebMvcBasedTest;
 import com.tpg.booksms.web.model.requests.NewBookRequest;
 import com.tpg.booksms.web.model.responses.CreatedBookResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+
+import java.math.BigDecimal;
 
 import static com.tpg.booksms.BookUtils.NEW_UUID;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,26 +19,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BookCommandController.class)
-public class NewBookRequestWebMvcTests {
+public class NewBookRequestWebMvcTests extends WebMvcBasedTest {
 
     private static final String UUID = NEW_UUID.toString();
-
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private UuidGenerationService uuidGenerationService;
-
-    @Autowired
-    private MockMvc mockMvc;
 
     private NewBookRequest newBookRequest;
 
     @BeforeEach
     public void setUp() {
-        objectMapper = new ObjectMapper();
+        super.setUp();
 
-        newBookRequest = NewBookRequest.builder().title("Surrogates")
-                .description("In the not so distant future.").isbn("ABD-28278").build();
+        newBookRequest = NewBookRequest.builder()
+                .title("Surrogates")
+                .description("In the not so distant future.")
+                .isbn("ABD-28278")
+                .price(new BigDecimal(1.99))
+                .quantity(1)
+                .build();
     }
 
     @Test
